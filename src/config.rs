@@ -15,7 +15,7 @@ pub fn check_conf() -> Config {
     let path = resources_path();
     let data = fs::read_to_string(path).unwrap();
     let config_data: Result<Config, serde_yaml::Error> = serde_yaml::from_str(&data);
-    
+
     let config = match config_data {
         Ok(config_d) => config_d,
         Err(e) => {
