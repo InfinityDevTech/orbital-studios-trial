@@ -14,9 +14,9 @@ pub async fn exec(command: ApplicationCommandInteraction, ctx: Context, _db: &Da
     let mut min: i64 = 0;
     let mut max: i64 = 6;
     options.iter().for_each(|o| {
-        if (o.name == "min") {
+        if o.name == "min" {
             min = o.value.as_ref().unwrap().as_i64().unwrap();
-        } else if (o.name == "max") {
+        } else if o.name == "max" {
             max = o.value.as_ref().unwrap().as_i64().unwrap();
         }
     });
