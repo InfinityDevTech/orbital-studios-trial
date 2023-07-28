@@ -1,5 +1,6 @@
-use mongodb::Database;
-use serenity::model::prelude::Activity;
+use mongodb::{Database, Collection};
+use mongodb::bson::doc;
+use serenity::model::prelude::{Activity, Member};
 use serenity::model::prelude::command::Command;
 use serenity::model::user::OnlineStatus;
 use serenity::async_trait;
@@ -8,6 +9,7 @@ use serenity::prelude::*;
 use serenity::model::application::interaction::Interaction;
 
 use crate::commands;
+use crate::database::User;
 use crate::log::{log_info, log_error, log_debug, log_warning};
 
 pub struct Handler {
@@ -28,12 +30,39 @@ impl EventHandler for Handler {
             Err(e) => log_error(&e.to_string())
         }
     }
+    // add to Users DB if they dont exist already.
+    async fn guild_member_addition(&self, ctx: Context, member: Member) {
+        let t: Collection<User> = self.db.collection("Users");
+        let d = t.find_one_and_update(doc!{"user_id": member.user.id.as_u64().to_string()}, doc!{"$inc": {"known_servers": 1}}, None).await.unwrap();
+            match d {
+                Some(_) => {}
+                None => {
+                    t.insert_one(User {
+                        user_id: member.user.id.as_u64().to_string(),
+                        commands: 1,
+                        known_servers: 1
+                    }, None).await.unwrap();
+                }
+            }
+    }
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
+        let t: Collection<User> = self.db.collection("Users");
         if let Interaction::ApplicationCommand(command) = interaction {
+            let d = t.find_one_and_update(doc!{"user_id": command.user.id.to_string()}, doc!{"$inc": {"commands": 1}}, None).await.unwrap();
+            match d {
+                Some(_) => {}
+                None => {
+                    t.insert_one(User {
+                        user_id: command.user.id.as_u64().to_string(),
+                        commands: 1,
+                        known_servers: 1
+                    }, None).await.unwrap();
+                }
+            }
             log_debug(&format!("User: {} is using command {}", command.user.name, command.data.name));
 
             let _response_t = match command.data.name.as_str() {
-                "info" => commands::info::exec(command, ctx).await,
+                "info" => commands::info::exec(command, ctx, &self.db).await,
                 _ => {
                     log_warning("Discord sent us an unknown command!");
                 }

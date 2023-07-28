@@ -1,0 +1,3 @@
+token: "DISCORD TOKEN"
+database_uri: "MONGO DB DATABASE CONNECTION URL"
+log_level: 3

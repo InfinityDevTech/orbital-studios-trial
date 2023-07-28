@@ -1,6 +1,15 @@
 use mongodb::{Client, Database, bson::doc};
+use serde::{Deserialize, Serialize};
 
 use crate::log::{log_error, log_info, log_debug};
+
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct User {
+    pub user_id: String,
+    pub commands: u64,
+    pub known_servers: u8
+}
 
 pub async fn connect(uri: &str) -> Database {
     log_info("Connecting to the DB");
