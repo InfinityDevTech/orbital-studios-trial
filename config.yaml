@@ -1,4 +1,0 @@
-token: "MTEzMzk3MTc0MzM5NzEzODUwNA.GWXYp9.XpWrNQf8WzepfaW2FJjELVT7btZhQnqPPF4IOg"
-#database_uri: "mongodb+srv://orbital:NRGxQVTASJDZgV3v@orbitaltrial.nbyakb6.mongodb.net/?retryWrites=true&w=majority"
-database_uri: "mongodb://localhost:27017"
-log_level: 3
