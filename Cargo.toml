@@ -16,3 +16,6 @@ serde_yaml = "0.9.25"
 serenity = { version = "0.11.6", default-features = false, features = ["client", "gateway", "rustls_backend", "builder", "cache", "http", "model", "utils"] }
 time = { version = "0.3.23", features = ["formatting", "macros"] }
 tokio = { version = "1.29.1", features = ["full"] }
+
+[build-dependencies]
+winres = "0.1.12"
