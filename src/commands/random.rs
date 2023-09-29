@@ -32,7 +32,7 @@ pub async fn exec(command: ApplicationCommandInteraction, ctx: Context, _db: &Da
 
                  ])
                  .colour(Colour::from_rgb(240,25,184));
-             return embed;
+             embed
          })
         })
     }).await;

@@ -28,6 +28,10 @@ impl EventHandler for Handler {
         let commands = Command::create_global_application_command(&ctx.http, |command| {commands::info::register(command)}).await;
         let _ = Command::create_global_application_command(&ctx.http, |command| {commands::random::register(command)}).await;
         let _ = Command::create_global_application_command(&ctx.http, |command| {commands::cat::register(command)}).await;
+        let _ = Command::create_global_application_command(&ctx.http, |command| {commands::say::register(command)}).await;
+        let _ = Command::create_global_application_command(&ctx.http, |command| {commands::ping::register(command)}).await;
+        let _ = Command::create_global_application_command(&ctx.http, |command| {commands::kick::register(command)}).await;
+        let _ = Command::create_global_application_command(&ctx.http, |command| {commands::ban::register(command)}).await;
         match commands {
             Ok(_) => log_info("Successfully registered commands!"),
             Err(e) => log_error(&e.to_string()),
@@ -95,6 +99,10 @@ impl EventHandler for Handler {
                     "info" => commands::info::exec(command, ctx, &self.db).await,
                     "random" => commands::random::exec(command, ctx, &self.db).await,
                     "cat" => commands::cat::exec(command, ctx, &self.db).await,
+                    "say" => commands::say::exec(command, ctx, &self.db).await,
+                    "ping" => commands::ping::exec(command, ctx, &self.db).await,
+                    "kick" => commands::kick::exec(command, ctx, &self.db).await,
+                    "ban" => commands::ban::exec(command, ctx, &self.db).await,
                     _ => {
                         log_warning("Discord sent us an unknown command!");
                     }

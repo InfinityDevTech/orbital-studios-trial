@@ -2,8 +2,7 @@ use mongodb::Database;
 use serde::Deserialize;
 use serenity::{
     builder::CreateApplicationCommand,
-    model::prelude::application_command::ApplicationCommandInteraction,
-    prelude::Context,
+    model::prelude::{application_command::ApplicationCommandInteraction, command::CommandOptionType}, prelude::Context,
     utils::Colour,
 };
 
@@ -26,12 +25,21 @@ pub async fn exec(command: ApplicationCommandInteraction, ctx: Context, _db: &Da
            let embed = e.author(|a| a.name("Cat").icon_url("https://cdn.discordapp.com/icons/805298672475701249/a_d2c6518167f7a6fe61a45aa20179f843.webp"))
                 .image(&cat.get(0).unwrap().url)
                 .colour(Colour::from_rgb(240,25,184));
-             return embed;
+             embed
          })
         })
     }).await;
 }
 
 pub fn register(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
-    command.name("cat").description("Get a random cat!")
+    command
+        .name("say")
+        .description("Make the bot say something!")
+        .create_option(|option| {
+            option
+                .name("to-say")
+                .description("What the bot will say")
+                .kind(CommandOptionType::String)
+                .required(true)
+        })
 }

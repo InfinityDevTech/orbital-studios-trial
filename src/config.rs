@@ -25,7 +25,7 @@ pub fn check_conf() -> Config {
         }
     };
     log_info("Config has been located and loaded successfully!");
-    return config
+    config
 }
 
 fn resources_path() -> String {

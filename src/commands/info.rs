@@ -49,7 +49,7 @@ pub async fn exec(command: ApplicationCommandInteraction, ctx: Context, db: &Dat
                         if user.avatar_url().is_some() {
                             embed.thumbnail(user.avatar_url().unwrap());
                         }
-                        return embed;
+                        embed
                     })
                     })
                 }).await.unwrap();
@@ -96,7 +96,7 @@ pub async fn exec(command: ApplicationCommandInteraction, ctx: Context, db: &Dat
                              ("Creator", "inf5", true),
                          ])
                          .colour(Colour::from_rgb(240,25,184));
-                     return embed;
+                     embed
                  })
                  })
              }).await.unwrap();
